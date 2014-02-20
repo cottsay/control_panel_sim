@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>control_panel_sim</name>
+  <version>0.4.99</version>
+  <description>The control_panel_sim package</description>
+
+  <maintainer email="logans@cottsay.net">Scott K Logan</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://csc.mcs.sdsmt.edu/</url>
+
+  <author email="logans@cottsay.net">Scott K Logan</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>libqt4-dev</build_depend>
+  <build_depend>pluginlib</build_depend>
+  <build_depend>control_panel</build_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>libqt4</run_depend>
+  <run_depend>pluginlib</run_depend>
+  <run_depend>control_panel</run_depend>
+  <run_depend>roscpp</run_depend>
+
+  <export>
+    <control_panel plugin="${prefix}/control_panel_sim.xml" />
+  </export>
+</package>

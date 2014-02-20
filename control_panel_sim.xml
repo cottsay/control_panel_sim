@@ -1,0 +1,7 @@
+<library path="lib/libcpsim">
+  <class type="control_panel::CPSimulatorPlugin" base_class_type="control_panel::ControlPanelPlugin">
+    <description>
+      Simulator##A basic robot simulator
+    </description>
+  </class>
+</library>

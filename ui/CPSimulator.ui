@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CPSimulatorPlugin</class>
+ <widget class="QWidget" name="CPSimulatorPlugin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>240</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>32</width>
+    <height>24</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>CPSimulator</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="control_panel::CPSimulatorGL" name="widget" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::WheelFocus</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>control_panel::CPSimulatorGL</class>
+   <extends>QWidget</extends>
+   <header>cpsim/CPSimulator.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+ <slots>
+  <slot>nukeNodelet()</slot>
+ </slots>
+</ui>
