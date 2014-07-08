@@ -862,13 +862,19 @@ CPSimulatorGL::CPSimulatorGL(QWidget *_parent)
       window_center_h(0),
       drag_window_center_start_w(-1),
       drag_window_center_start_h(-1),
+      robot_dl(0),
       map_id(0),
-      map_scale(100)
+      map_scale(100),
+      map_dl(0)
 {
 }
 
 CPSimulatorGL::~CPSimulatorGL()
 {
+    if(robot_dl)
+      glDeleteLists(robot_dl, 1);
+    if(map_dl)
+      glDeleteLists(map_dl, 1);
 }
 
 void CPSimulatorGL::setMap(const QImage &img)
@@ -880,12 +886,16 @@ void CPSimulatorGL::setMap(const QImage &img)
 
     reloadTexture();
 
+    paintEnvironment();
+
     updateGL();
 }
 
 void CPSimulatorGL::setMapScale(const double scale)
 {
     map_scale = scale;
+
+    paintEnvironment();
 
     updateGL();
 }
@@ -914,6 +924,15 @@ void CPSimulatorGL::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(1, 1, 1, 1);
 
+    // Create robot
+    robot_dl = glGenLists(1);
+
+    // Create map
+    map_dl = glGenLists(1);
+
+    // Paint the robot
+    paintRobot();
+
     reloadTexture();
 }
 
@@ -927,16 +946,17 @@ void CPSimulatorGL::resizeGL(int _w, int _h)
 void CPSimulatorGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    paintEnvironment();
-    paintRobot();
+    glLoadIdentity();
+    glCallList(map_dl);
+    glTranslated(x, y, 0.0);
+    glRotated(theta * 180.0 / M_PI, 0.0, 0.0, 1.0);
+    glCallList(robot_dl);
 }
 
 void CPSimulatorGL::paintEnvironment()
 {
-    // TODO: Should eventually be "compiled"
-    glLoadIdentity();
+    glNewList(map_dl, GL_COMPILE);
     glColor3f(1.0, 1.0, 1.0);
-
     glEnable(GL_TEXTURE_2D);
     glBegin(GL_POLYGON);
     glTexCoord2f(0, 0);
@@ -949,14 +969,12 @@ void CPSimulatorGL::paintEnvironment()
     glVertex2f(-map.width() / map_scale / 2.0, map.height() / map_scale / 2.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
+    glEndList();
 }
 
 void CPSimulatorGL::paintRobot()
 {
-    // TODO: Should eventually be "compiled"
-    glLoadIdentity();
-    glTranslated(x, y, 0.0);
-    glRotated(theta * 180.0 / M_PI, 0.0, 0.0, 1.0);
+    glNewList(robot_dl, GL_COMPILE);
     glColor3f(1, 0, 0);
     glBegin(GL_LINES);
     glVertex2d(0, 0);
@@ -967,6 +985,7 @@ void CPSimulatorGL::paintRobot()
     for(float i = 0; i < 2 * M_PI; i+= M_PI / 50.0)
         glVertex2d(cos(i) * 0.165, sin(i) * 0.165);
     glEnd();
+    glEndList();
 }
 
 void CPSimulatorGL::mousePressEvent(QMouseEvent *event)

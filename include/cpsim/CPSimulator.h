@@ -115,10 +115,14 @@ private:
     double y;
     double theta;
 
+    // Robot
+    int robot_dl;
+
     // Map
     QImage map;
     GLuint map_id;
     double map_scale;
+    int map_dl;
 };
 
 // Robot State
