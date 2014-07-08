@@ -541,6 +541,7 @@ CPSimulatorPlugin::CPSimulatorPlugin() :
     connect(&robotSim, SIGNAL(updatePose(double, double, double)), ui->widget, SLOT(updatePose(double, double, double)));
     connect(&robotSimTimer, SIGNAL(timeout()), &robotSim, SLOT(spinOnce()));
     connect(&robotSimThread, SIGNAL(started()), &robotSimTimer, SLOT(start()));
+    connect(&robotSimThread, SIGNAL(finished()), &robotSimTimer, SLOT(stop()));
     connect(this, SIGNAL(mapUpdated(const QImage &)), ui->widget, SLOT(setMap(const QImage &)));
 
     connect(&robotSim, SIGNAL(updatePose(double, double, double)), this, SLOT(publishSimPose(double, double, double)));
@@ -888,7 +889,7 @@ void CPSimulatorGL::setMap(const QImage &img)
 
     paintEnvironment();
 
-    updateGL();
+    update();
 }
 
 void CPSimulatorGL::setMapScale(const double scale)
@@ -897,7 +898,7 @@ void CPSimulatorGL::setMapScale(const double scale)
 
     paintEnvironment();
 
-    updateGL();
+    update();
 }
 
 void CPSimulatorGL::reloadTexture()
@@ -911,7 +912,7 @@ void CPSimulatorGL::updatePose(double _x, double _y, double _theta)
     x = _x;
     y = _y;
     theta = _theta;
-    updateGL();
+    update();
 }
 
 void CPSimulatorGL::initializeGL()
@@ -926,12 +927,11 @@ void CPSimulatorGL::initializeGL()
 
     // Create robot
     robot_dl = glGenLists(1);
+    paintRobot();
 
     // Create map
     map_dl = glGenLists(1);
-
-    // Paint the robot
-    paintRobot();
+    paintEnvironment();
 
     reloadTexture();
 }
@@ -1016,7 +1016,7 @@ void CPSimulatorGL::mouseMoveEvent(QMouseEvent *event)
         window_center_w = drag_window_center_start_w + zoom_level * (drag_origin_w - event->x());
         window_center_h = drag_window_center_start_h - zoom_level * (drag_origin_h - event->y());
         updateZoom();
-        updateGL();
+        update();
         event->accept();
     }
 }
@@ -1029,7 +1029,7 @@ void CPSimulatorGL::wheelEvent(QWheelEvent *event)
         if(zoom_level < .0005)
             zoom_level = .0005;
         updateZoom();
-        updateGL();
+        update();
         event->accept();
     }
 }
