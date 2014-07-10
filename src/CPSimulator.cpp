@@ -1034,18 +1034,6 @@ void CPSimulatorGL::wheelEvent(QWheelEvent *event)
     }
 }
 
-void CPSimulatorGL::keyPressEvent(QKeyEvent* event)
-{
-    switch(event->key()) {
-    case Qt::Key_Escape:
-        close();
-        break;
-    default:
-        event->ignore();
-        break;
-    }
-}
-
 void CPSimulatorGL::updateZoom()
 {
     const double w_2 = w / 2.0 * zoom_level;
