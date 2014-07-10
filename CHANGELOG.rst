@@ -2,8 +2,8 @@
 Changelog for package control_panel_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2014-07-10)
+------------------
 * Require control_panel with global GLWidget functionality
 * Remove close on ESC key
 * Use global GLWidget instance
