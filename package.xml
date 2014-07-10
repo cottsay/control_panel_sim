@@ -15,11 +15,11 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>libqt4-dev</build_depend>
   <build_depend>pluginlib</build_depend>
-  <build_depend>control_panel</build_depend>
+  <build_depend version_gte="0.5.0">control_panel</build_depend>
   <build_depend>roscpp</build_depend>
   <run_depend>libqt4</run_depend>
   <run_depend>pluginlib</run_depend>
-  <run_depend>control_panel</run_depend>
+  <run_depend version_gte="0.5.0">control_panel</run_depend>
   <run_depend>roscpp</run_depend>
 
   <export>
