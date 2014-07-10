@@ -853,7 +853,7 @@ void CPSimulatorPlugin::publishLaser(const std::vector<float> scan)
 }
 
 CPSimulatorGL::CPSimulatorGL(QWidget *_parent)
-    : parent(_parent),
+    : QGLWidget(_parent, &(ControlPanelPlugin::getGlobalGLWidget())),
       zoom_level(0.05),
       w(100),
       h(100),
@@ -931,9 +931,8 @@ void CPSimulatorGL::initializeGL()
 
     // Create map
     map_dl = glGenLists(1);
-    paintEnvironment();
-
     reloadTexture();
+    paintEnvironment();
 }
 
 void CPSimulatorGL::resizeGL(int _w, int _h)
@@ -958,6 +957,7 @@ void CPSimulatorGL::paintEnvironment()
     glNewList(map_dl, GL_COMPILE);
     glColor3f(1.0, 1.0, 1.0);
     glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, map_id);
     glBegin(GL_POLYGON);
     glTexCoord2f(0, 0);
     glVertex2f(-map.width() / map_scale / 2.0, -map.height() / map_scale / 2.0);
@@ -1050,6 +1050,7 @@ void CPSimulatorGL::updateZoom()
 {
     const double w_2 = w / 2.0 * zoom_level;
     const double h_2 = h / 2.0 * zoom_level;
+    makeCurrent();
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
